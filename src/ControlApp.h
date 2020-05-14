@@ -6,11 +6,7 @@
 #include "ofApp.h"
 #include "ofxKinect.h"
 #include "ofxOpenCv.h"
-#include "Simulation.h"
 #include "ofxShader.h"
-#include "Layer.h"
-#include "RevealLayer.h"
-#include "GrayScottLayer.h"
 #include "ofxJsonSettings.h"
 
 #define KINECT 1
@@ -27,7 +23,6 @@ class ControlApp : public ofBaseApp{
     
     ofxCvGrayscaleImage baseLineDepth;
     ofxCvGrayscaleImage depth;
-    ofxCvGrayscaleImage warpedDepth;
     ofxCvGrayscaleImage depthDiff;
     
     vector<ofPoint> calibrationPoints;

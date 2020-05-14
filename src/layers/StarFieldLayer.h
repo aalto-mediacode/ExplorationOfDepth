@@ -11,7 +11,7 @@
 #include "ofMain.h"
 #include "Layer.h"
 
-class GrayScottLayer : public Layer {
+class StarFieldLayer : public Layer {
     
     ofxShaderFilter revealShader;
 public:

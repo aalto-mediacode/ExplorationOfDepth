@@ -5,11 +5,10 @@
 #include "ofMain.h"
 #include "ofxKinect.h"
 #include "ofxOpenCv.h"
-#include "Simulation.h"
 #include "ofxShader.h"
-#include "Layer.h"
-#include "RevealLayer.h"
-#include "GrayScottLayer.h"
+#include "layers/Layer.h"
+#include "layers/RevealLayer.h"
+#include "layers/StarFieldLayer.h"
 
 #define KINECT 1
 
@@ -21,29 +20,9 @@ enum State {
 
 class ofApp : public ofBaseApp{
     
-    
-
-    
-    Simulation simulation;
-    
-    
-    
-    
-    ofMesh mesh;
-    ofLight pointLight;
-    
-    ofxShader greenFieldShader;
-    
-    ofEasyCam cam;
-    
-    ofFbo fakeDepthFbo;
-    
-    ofPixels depthPixels;
-    int fakeDepthRadius = 0;
-    
     vector<shared_ptr<Layer>> layers = {
         make_shared<RevealLayer>(),
-        make_shared<GrayScottLayer>()
+        make_shared<StarFieldLayer>()
     };
     
 	public:

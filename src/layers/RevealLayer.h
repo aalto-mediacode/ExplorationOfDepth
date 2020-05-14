@@ -1,10 +1,3 @@
-//
-//  RevealLayer.h
-//  ExplorationOfDepth
-//
-//  Created by Oskar Koli on 11.5.2020.
-//
-
 #ifndef RevealLayer_h
 #define RevealLayer_h
 
@@ -25,6 +18,8 @@ public:
     }
     
     void draw(ofBaseHasTexture& depth, float minDepth, float maxDepth) {
+        
+        // Calculates the portal hole based on the depth texture. Using blend mode "multiply" only the hole will be visible from the StarField layer.
         revealShader.setUniformTexture("depthTexture", depth);
         revealShader.render();
         ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
@@ -32,6 +27,7 @@ public:
         ofDisableBlendMode();
         
         
+        // Draws the outline of the hole.
         revealOutlineShader.setUniformTexture("revealTexture", revealShader);
         revealOutlineShader.render();
         
