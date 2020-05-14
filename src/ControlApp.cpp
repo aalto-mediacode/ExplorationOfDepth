@@ -66,32 +66,50 @@ void ControlApp::update(){
             depthDiff.warpIntoMe(depth, &*calibrationPoints.begin(), outputQuad);
             
             if (!baselineSet) {
-                baselineSet = true;
-                baseLineDepth = depthDiff;
+                ofPixels& depthDiffPixels = depthDiff.getPixels();
+                baselineDepthFrames.push_back(depthDiffPixels);
+                if (baselineDepthFrames.size() > 30) {
+                    ofPixels avgPix;
+                    avgPix.allocate(depthDiffPixels.getWidth(), depthDiffPixels.getHeight(), depthDiffPixels.getNumChannels());
+                    unsigned char * pixels = avgPix.getData();
+                    int numOfPix = depthDiffPixels.getWidth() * depthDiffPixels.getHeight() * depthDiffPixels.getNumChannels();
+                    for (int i = 0; i < numOfPix; i++) {
+                        long sum = 0.f;
+                        for (ofPixels& pix : baselineDepthFrames) {
+                            sum += pix.getData()[i];
+                        }
+                        pixels[i] = sum / (long) baselineDepthFrames.size();
+                    }
+                    baseLineDepth.setFromPixels(avgPix);
+                    baselineSet = true;
+                    baselineDepthFrames.clear();
+                }
             }
-            
-            //depthDiff = depth;
-            depthDiff.absDiff(baseLineDepth);
-            
-            unsigned char* pixelData = depthDiff.getPixels().getData();
-            
-            // Reckon the total number of bytes to examine.
-            // This is the image's width times its height,
-            // times 3 -- because each pixel requires 3 bytes
-            // to store its R, G, and B color components.
-            int nTotalBytes = depthDiff.getWidth() * depthDiff.getHeight();
-            
-            const int MINV = 2;
-            const int MAXV = 10;
-            // For every byte of the RGB image data,
-            for(int i=0; i<nTotalBytes; i++){
+            else {
+                
+                //depthDiff = depth;
+                depthDiff.absDiff(baseLineDepth);
+                
+                unsigned char* pixelData = depthDiff.getPixels().getData();
+                
+                // Reckon the total number of bytes to examine.
+                // This is the image's width times its height,
+                // times 3 -- because each pixel requires 3 bytes
+                // to store its R, G, and B color components.
+                int nTotalBytes = depthDiff.getWidth() * depthDiff.getHeight();
+                
+                const int MINV = 3;
+                const int MAXV = 15;
+                // For every byte of the RGB image data,
+                for(int i=0; i<nTotalBytes; i++){
 
-                // pixelData[i] is the i'th byte of the image;
-                // subtract it from 255, to make a "photo negative"
-                pixelData[i] = ofMap(std::min(std::max(MINV, (int) pixelData[i]), MAXV), MINV, MAXV, 0.f, 255.f) ;
+                    // pixelData[i] is the i'th byte of the image;
+                    // subtract it from 255, to make a "photo negative"
+                    pixelData[i] = ofMap(std::min(std::max(MINV, (int) pixelData[i]), MAXV), MINV, MAXV, 0.f, 255.f) ;
+                }
+                
+                app->depth = depthDiff;
             }
-            
-            app->depth = depthDiff;
         }
     }
     

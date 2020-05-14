@@ -23,12 +23,16 @@ class ControlApp : public ofBaseApp{
     ofxKinect kinect;
     
     bool baselineSet = false;
+    vector<ofPixels> baselineDepthFrames;
+    
     ofxCvGrayscaleImage baseLineDepth;
     ofxCvGrayscaleImage depth;
     ofxCvGrayscaleImage warpedDepth;
     ofxCvGrayscaleImage depthDiff;
     
     vector<ofPoint> calibrationPoints;
+    
+    
     
     public:
         shared_ptr<ofApp> app;
