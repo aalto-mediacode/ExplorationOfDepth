@@ -1,0 +1,5 @@
+ofxJSON
+ofxJsonSettings
+ofxKinect
+ofxOpenCv
+ofxShader
