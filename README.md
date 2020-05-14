@@ -2,6 +2,7 @@
 
 
 [![](media/ExplorationOfDepth.gif)](https://www.youtube.com/watch?v=UAIzCVQXREE)
+
 [Click to see full video!](https://www.youtube.com/watch?v=UAIzCVQXREE)
 
 Installation prototype by Oskar Koli for the course Generative Media Coding @ Aalto Media Lab.
